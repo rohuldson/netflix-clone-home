@@ -1,12 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import "./MovieRow.css";
-// logo Netflix https://image.tmdb.org/t/p/w500/wwemzKWzjKYJFfCeiB57q3r4Bcm.png
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+
 export default ({ title, items }) => {
+  const [scrollX, setScrollX] = useState(-400);
+
+  const handleLeftArrow = () => {
+    let x = scrollX + Math.round(window.innerWidth / 2);
+    if (x > 0) {
+      x = 0;
+    }
+    setScrollX(x);
+  };
+
+  const handleRightArrow = () => {
+    let x = scrollX - Math.round(window.innerWidth / 2);
+    /* Pegar largura total de quantos filmes tem na lista */
+    let listW = items.results.length * 150;
+    /* agora calcular junto com o tamanho da tela do usuário */
+
+    if (window.innerWidth - listW > x) {
+      /*  o tamanho da minha tela, menos o tam. da lista, no caso maior que X*/
+      x = window.innerWidth - listW - 60;
+      /*  o tamanho geral de tudo menos o Padding aplicado em cada lad, no caso 30px L, 30px R */
+    }
+    setScrollX(x);
+  };
+
   return (
     <div className="movieRow">
       <h2>{title}</h2>
+      <div className="movieRow-left" onClick={handleLeftArrow}>
+        <NavigateBeforeIcon style={{ fontSize: 50 }} />
+      </div>
+      <div className="movieRow-right" onClick={handleRightArrow}>
+        <NavigateNextIcon style={{ fontSize: 50 }} />
+      </div>
+
       <div className="movieRow--listarea">
-        <div className="movieRow--list">
+        <div
+          className="movieRow--list"
+          style={{
+            marginLeft: scrollX,
+            width: items.results.length * 150,
+          }}
+        >
           {items.results.length > 0 &&
             items.results.map((item, key) => (
               <div key={key} className="movieRow--item">
