@@ -66,6 +66,12 @@ export default () => {
         por Rohuldson <br />
         Direito de Dados e imagens: Netflix e Tmdb <br />
       </footer>
+
+      {movieList <= 0 && (
+        <div className="loading">
+          <img src="netflix-netflix-startup.gif" />
+        </div>
+      )}
     </div>
   );
 };
